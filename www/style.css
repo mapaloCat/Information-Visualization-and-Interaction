@@ -1,0 +1,39 @@
+.main-header {
+  position: fixed;
+  width:100%;
+  height: 10;
+}
+
+.sidebar {
+	width: 100px;
+}
+.content {
+  padding-top: 60px;
+}
+
+#sidebarItemExpanded > ul > li{
+	width: 230px;
+}
+
+#map_cluster{
+	margin-top: 30px;
+}
+
+
+#first_dimension {
+	text-align: center;
+}
+
+#second_dimension {
+	text-align: center;
+}
+
+#var_explained {
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#dimension_contrib {
+	text-align: center;
+}

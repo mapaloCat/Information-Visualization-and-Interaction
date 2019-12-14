@@ -1,0 +1,5 @@
+The authors of this shiny app  are:
+
+* Roberto Llop Cardenal (roberto.llop.cardenal@gmail.com). 
+* Panagiotis Michalopoulos (panagi.michalopoulos@gmail.com).   
+* The code and resources for this Shiny app can be found in [**this repository**](https://github.com/rllopcar/big_data_shiny.git)
