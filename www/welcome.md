@@ -1,18 +1,5 @@
 <link href="styleMD.css" rel="stylesheet"></link>
 # Welcome to Europe's Shiny app! 
-The authors of this shiny app  are:
-
-<div class="center-block row" >
-
-<div class=col-sm-6>
-<img class="img-circle" src="roberto.png" width="95" height = "100"/>
-<p> Roberto Llop Cardenal </br>(<a href = "mailto:robertollopcardenal@gmail.com">robertollopcardenal@gmail.com</a>)</p>
-</div>
-  <div>
-  <img class="img-circle" src="panas.png" width="90" height = "100"/> 
-  <p> Panagiotis Michalopoulos </br>(<a href="mailto:panagi.michalopoulos@gmail.com">panagi.michalopoulos@gmail.com</a>)</p>
-  </div>
-</div> 
 
 * The code and resources for this Shiny app can be found in [**this repository**](https://github.com/rllopcar/big_data_shiny.git)
 

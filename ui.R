@@ -23,7 +23,7 @@ sidebar = dashboardSidebar(
              menuSubItem("Principal Component Analysis", tabName = "pca"),
              menuSubItem("Clustering", tabName = "clustering")),
     menuItem("Source code", icon = icon("file-code-o"), 
-             href = "https://github.com/rllopcar/big_data_shiny.git")
+             href = "https://github.com/mapaloCat/Information-Visualization-and-Interaction")
   )
   
 )
