@@ -21,9 +21,7 @@ sidebar = dashboardSidebar(
              menuSubItem("Data Exploration", tabName = "data_exploration")),
     menuItem("Data analysis", tabName = "analysis", icon = icon("fas fa-search"),
              menuSubItem("Principal Component Analysis", tabName = "pca"),
-             menuSubItem("Clustering", tabName = "clustering")),
-    menuItem("Source code", icon = icon("file-code-o"), 
-             href = "https://github.com/rllopcar/big_data_shiny.git")
+             menuSubItem("Clustering", tabName = "clustering"))
   )
   
 )
@@ -214,22 +212,28 @@ body = dashboardBody(
                 )
               ),
               fluidRow(
-                box(h4(strong("Variance graph by dimensions")),
-                    width = "4",
-                    solidHeader = T,
-                    status = "primary",
-                    numericInput("first_dimension", "Choose one dimension", value = 1, min = 1, max = 7),
-                    numericInput("second_dimension", "Choose one dimension", value = 2, min = 1, max = 7),
-                    plotOutput("pca_dimensions")
+                column(6,
+                  box(h4(strong("Variance graph by dimensions")),
+                      width = "12",
+                      solidHeader = T,
+                      status = "primary",
+                      numericInput("first_dimension", "Choose one dimension", value = 1, min = 1, max = 7),
+                      numericInput("second_dimension", "Choose one dimension", value = 2, min = 1, max = 7),
+                      plotOutput("pca_dimensions")
+                  )
                 ),
-                box(h4(strong("Contribution of variables to dimensions")),
-                    width = "8",
-                    solidHeader = T,
-                    status = "primary",
-                    numericInput("dimension_contrib", "Choose one dimension", value = 1, min = 1, max = 7, width = "300px"),
-                    plotOutput("pca_contribution", width = "750px", height = "473px")
+                column(6,
+                  box(h4(strong("Contribution of variables to dimensions")),
+                      width = "12",
+                      solidHeader = T,
+                      status = "primary",
+                      numericInput("dimension_contrib", "Choose one dimension", value = 1, min = 1, max = 7, width = "300px"),
+                      plotOutput("pca_contribution", width = "750px", height = "473px")
+                  )
                 )
               )
+                
+              
             )
     ),
     tabItem(tabName ="clustering",
