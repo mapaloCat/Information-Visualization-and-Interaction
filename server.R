@@ -396,6 +396,109 @@ shinyServer(function(input, output) {
     ggpairs(eu[1:28,-c(1,2)], lower = list(continuous = ggpairs_fn))
   })
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  vals <- reactiveValues(
+    keeprows = rep(TRUE, nrow(europe.clipped))
+  )
+  
+  # radioInputX = reactive({
+  # 
+  #   switch (input$radio_ggplot1,
+  #           "Area" = "Area",
+  #           "GDP" = "GDP",
+  #           "Inflation" = "Inflation",
+  #           "Life expectancy" = "Life.expect",
+  #           "Military" = "Military",
+  #           "Population growth" = "Pop.growth",
+  #           "Unemployment" = "Unemployment"
+  #   )
+  # })
+  # 
+  # radioInputY = reactive({
+  # 
+  #   switch (input$radio_ggplot2,
+  #           "Area" = "Area",
+  #           "GDP" = "GDP",
+  #           "Inflation" = "Inflation",
+  #           "Life expectancy" = "Life.expect",
+  #           "Military" = "Military",
+  #           "Population growth" = "Pop.growth",
+  #           "Unemployment" = "Unemployment"
+  #   )
+  # })
+  
+  output$ggplot_toggle_points <- renderPlot({
+    # Plot the kept and excluded points as two separate data sets
+    keep    <- europe.clipped[ vals$keeprows, , drop = FALSE]
+    exclude <- europe.clipped[!vals$keeprows, , drop = FALSE]
+    
+    
+    ggplot(keep, aes_string(input$radio_ggplot1, input$radio_ggplot2)) + 
+      geom_point() +
+      geom_smooth(method = lm, fullrange = TRUE, color = "blue", fill = "blue") +
+      geom_smooth(method = loess, fullrange = TRUE, color = "red", fill = "red") +
+      geom_point(data = exclude, shape = 21, fill = NA, color = "black", alpha = 0.25)
+      # coord_cartesian(xlim = c(1.5, 5.5), ylim = c(5,35))
+  })
+  
+  # Toggle points that are clicked
+  observeEvent(input$toggle_points_click, {
+    res <- nearPoints(europe.clipped, input$toggle_points_click, allRows = TRUE)
+    
+    vals$keeprows <- xor(vals$keeprows, res$selected_)
+  })
+  
+  # Toggle points that are brushed, when button is clicked
+  observeEvent(input$exclude_toggle, {
+    res <- brushedPoints(europe.clipped, input$toggle_points_brush, allRows = TRUE)
+    
+    vals$keeprows <- xor(vals$keeprows, res$selected_)
+  })
+  
+  # Reset all points
+  observeEvent(input$exclude_reset, {
+    vals$keeprows <- rep(TRUE, nrow(europe.clipped))
+  })
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   select_algorithm = eventReactive(input$display,{
     switch(input$select_algorithm,
            "None"= "None",

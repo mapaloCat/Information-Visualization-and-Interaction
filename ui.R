@@ -19,9 +19,10 @@ sidebar = dashboardSidebar(
     menuItem("Explore Europe dataset", tabName = "explore", icon = icon("fas fa-database"),
              menuSubItem("Dataset", tabName = "dataset"),
              menuSubItem("Data Exploration", tabName = "data_exploration")),
-    menuItem("Data analysis", tabName = "analysis", icon = icon("fas fa-search"),
-             menuSubItem("Principal Component Analysis", tabName = "pca"),
-             menuSubItem("Clustering", tabName = "clustering"))
+    menuItem("Data analysis", tabName = "analysis", icon = icon("fas fa-search")
+             # menuSubItem("Principal Component Analysis", tabName = "pca"),
+             # menuSubItem("Clustering", tabName = "clustering")
+             )
   )
   
 )
@@ -155,12 +156,72 @@ body = dashboardBody(
                              includeHTML("www/scatter_explanation.md"),
                              withSpinner(plotOutput("ggpairs_graph", height = "700"))
                            ), align = "center")
-                         )
+                         ),
+                         fluidRow(
+                        #    column(6, box(
+                        #      status = "primary",
+                        #      width = "12",
+                        #      solidHeader = T,
+                        #      radioButtons("radio_ggplot1", label = h3("x coordinate"),
+                        #                   choices = list("Area" = 1, "GDP" = 2, "Inflation" = 3,
+                        #                                  "Life expectancy" = 4, "Military" = 5, "Population growth" = 6,
+                        #                                  "Unemployment" = 7), 
+                        #                   selected = 1),
+                        #      radioButtons("radio_ggplot2", label = h3("y coordinate"),
+                        #                   choices = list("Area" = 1, "GDP" = 2, "Inflation" = 3,
+                        #                                  "Life expectancy" = 4, "Military" = 5, "Population growth" = 6,
+                        #                                  "Unemployment" = 7), 
+                        #                   selected = 2)
+                        # ))
+                           box(
+                             status = "primary",
+                             width = "12",
+                             solidHeader = T,
+                             column(3, radioButtons("radio_ggplot1", label = h3("x coordinate"),
+                                                    choices = list("GDP" = "GDP",
+                                                                   "Inflation" = "Inflation",
+                                                                   "Life expectancy" = "Life.expect",
+                                                                   "Military" = "Military",
+                                                                   "Population growth" = "Pop.growth",
+                                                                   "Unemployment" = "Unemployment"), 
+                                                    selected = "Life.expect")),
+                             column(3, radioButtons("radio_ggplot2", label = h3("y coordinate"),
+                                                    choices = list("GDP" = "GDP",
+                                                                   "Inflation" = "Inflation",
+                                                                   "Life expectancy" = "Life.expect",
+                                                                   "Military" = "Military",
+                                                                   "Population growth" = "Pop.growth",
+                                                                   "Unemployment" = "Unemployment"), 
+                                                    selected = "GDP")),
+                             column(6, plotOutput("ggplot_toggle_points", height = 350,
+                                                  click = "toggle_points_click",
+                                                  brush = brushOpts(
+                                                    id = "toggle_points_brush"
+                                                  )
+                             ),
+                             actionButton("exclude_toggle", "Toggle points"),
+                             actionButton("exclude_reset", "Reset"))
+                           )
+                        #    ,
+                        # column(6, box(
+                        #   status = "primary",
+                        #   width = "12",
+                        #   solidHeader = T,
+                        #   plotOutput("ggplot_toggle_points", height = 350,
+                        #              click = "toggle_points_click",
+                        #              brush = brushOpts(
+                        #                id = "toggle_points_brush"
+                        #              )
+                        #   ),
+                        #   actionButton("exclude_toggle", "Toggle points"),
+                        #   actionButton("exclude_reset", "Reset")
+                        # ))
+                        )
                 )
               )
             )
 			),
-    tabItem(tabName = "pca",
+    tabItem(tabName = "analysis",
             fluidRow(
               box(
                 width ="12",
@@ -231,78 +292,73 @@ body = dashboardBody(
                       plotOutput("pca_contribution", width = "750px", height = "473px")
                   )
                 )
-              )
-                
-              
-            )
-    ),
-    tabItem(tabName ="clustering",
-            div (
-              fluidRow(
-                column(
-                  6,
-                  selectInput(
-                    "select_algorithm",
-                    "Select the clustering algorithm:",
-                    choices = c("None","Hierarchical Clustering (HC)", "Kmeans")
+              ),
+              div (class = "container-fluid",
+                   fluidRow(
+                     column(
+                       6,
+                       selectInput(
+                         "select_algorithm",
+                         "Select the clustering algorithm:",
+                         choices = c("None","Hierarchical Clustering (HC)", "Kmeans")
+                       )
+                     ),
+                     column(6,
+                            checkboxInput("pca_checkbox", 
+                                          strong("Perform PCA before applying the clustering algorithm"),
+                                          value = F))
+                   ),
+                   fluidRow(
+                     column(
+                       6,
+                       numericInput(
+                         "select_Nclusters",
+                         "Select the number of clusters",
+                         value = 3,
+                         min = 2)
+                     ),
+                     column(6,
+                            conditionalPanel(condition = "input.pca_checkbox == 1",
+                                             numericInput("pca_nDimensions", strong("Choose the number of PCA components to be included (between 1 and 7)"), value = 1, min = 1, max = 7)
+                            )
+                     )
+                   )
+              ),
+              div(class = "container-fluid",
+                align = "center",
+                actionButton(
+                  "display",
+                  strong("Display")             
+                ),
+                actionButton(
+                  "clear",
+                  strong("Clear")
+                )
+              ),
+              div(class = "container-fluid",
+                tabsetPanel(
+                  type="tabs",
+                  tabPanel("Map clustering",
+                           #tags$style(type = "text/css", "#map_cluster {height: calc(100vh - 80px) !important;}"),
+                           tags$style(type = "text/css", "#map_cluster {height: calc(400px) !important;}"),
+                           leafletOutput("map_cluster", height = "400px")
+                  ),
+                  tabPanel("Dimensions clustering", 
+                           plotOutput("dimensions", height = "450px")),
+                  tabPanel("Dendogram clustering (only for HC)",
+                           includeMarkdown("www/dendogram_explanation.md"),
+                           plotOutput("dendrogram", height = "450px")
                   )
                 ),
-                column(
-                  6,
-                  numericInput(
-                    "select_Nclusters",
-                    "Select the number of clusters",
-                    value = 3,
-                    min = 2)
-                )
-              ),
-              fluidRow(
-                column(6,
-                       checkboxInput("pca_checkbox", 
-                                     strong("Do you want to perform PCA before applying the clustering algorithm?"),
-                                     value = F)),
-                column(6,
-                       conditionalPanel(condition = "input.pca_checkbox == 1",
-                                        numericInput("pca_nDimensions", strong("Choose a number of components from the PCA (between 1 and 7)"), value = 1, min = 1, max = 7)
-                       )
+                tabsetPanel(
+                  type="tabs",
+                  tabPanel("Clustering validation",
+                           includeMarkdown("www/silhouette_explanation.md"),
+                           plotOutput("clustering_validation", height = "450px"))
+                  
                 )
               )
-            ),
-            div(
-              align = "center",
-              actionButton(
-                "display",
-                strong("Display")             
-              ),
-              actionButton(
-                "clear",
-                strong("Clear")
-              )
-            ),
-            #div(
-              tabsetPanel(
-                type="tabs",
-                tabPanel("Map clustering",
-                         #tags$style(type = "text/css", "#map_cluster {height: calc(100vh - 80px) !important;}"),
-                         tags$style(type = "text/css", "#map_cluster {height: calc(400px) !important;}"),
-                         leafletOutput("map_cluster", height = "400px")
-                ),
-                tabPanel("Dimensions clustering", 
-                         plotOutput("dimensions", height = "450px")),
-                tabPanel("Dendogram clustering (only for HC)",
-                         includeMarkdown("www/dendogram_explanation.md"),
-                         plotOutput("dendrogram", height = "450px")
-                )
-              ),
-              tabsetPanel(
-                type="tabs",
-                tabPanel("Clustering validation",
-                         includeMarkdown("www/silhouette_explanation.md"),
-                         plotOutput("clustering_validation", height = "450px"))
-                
-              )
-            
-            #)
+            )
     )
   )
   
