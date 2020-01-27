@@ -7,7 +7,7 @@ The shiny application is work of:
 
 <div class=col-sm-6>
   <img class="img-circle" src="bart.jpg" width="120" height = "120"/>
-  <p> Bart van Rooijen </br>(<a href = "mailto:bart@student.tue.nl">bartie@student.tue.nl</a>)</p>
+  <p> Bart van Rooijen </br>(<a href = "mailto:bart@student.tue.nl">b.w.m.v.rooijen@student.tue.nl</a>)</p>
 </div>
 <div>
   <img class="img-circle" src="panas.png" width="120" height = "120"/> 
