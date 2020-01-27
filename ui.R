@@ -158,21 +158,6 @@ body = dashboardBody(
                            ), align = "center")
                          ),
                          fluidRow(
-                        #    column(6, box(
-                        #      status = "primary",
-                        #      width = "12",
-                        #      solidHeader = T,
-                        #      radioButtons("radio_ggplot1", label = h3("x coordinate"),
-                        #                   choices = list("Area" = 1, "GDP" = 2, "Inflation" = 3,
-                        #                                  "Life expectancy" = 4, "Military" = 5, "Population growth" = 6,
-                        #                                  "Unemployment" = 7), 
-                        #                   selected = 1),
-                        #      radioButtons("radio_ggplot2", label = h3("y coordinate"),
-                        #                   choices = list("Area" = 1, "GDP" = 2, "Inflation" = 3,
-                        #                                  "Life expectancy" = 4, "Military" = 5, "Population growth" = 6,
-                        #                                  "Unemployment" = 7), 
-                        #                   selected = 2)
-                        # ))
                            box(
                              status = "primary",
                              width = "12",
@@ -193,7 +178,7 @@ body = dashboardBody(
                                                                    "Population growth" = "Pop.growth",
                                                                    "Unemployment" = "Unemployment"), 
                                                     selected = "GDP")),
-                             column(4, plotOutput("ggplot_toggle_points", height = 350,
+                             column(4, align = "center", plotOutput("ggplot_toggle_points", height = 350,
                                                   click = "toggle_points_click",
                                                   brush = brushOpts(
                                                     id = "toggle_points_brush"
@@ -204,20 +189,6 @@ body = dashboardBody(
                              column(3, plotlyOutput("boxplotX_toggle", height = "100%")),
                              column(3, plotlyOutput("boxplotY_toggle", height = "100%"))
                            )
-                        #    ,
-                        # column(6, box(
-                        #   status = "primary",
-                        #   width = "12",
-                        #   solidHeader = T,
-                        #   plotOutput("ggplot_toggle_points", height = 350,
-                        #              click = "toggle_points_click",
-                        #              brush = brushOpts(
-                        #                id = "toggle_points_brush"
-                        #              )
-                        #   ),
-                        #   actionButton("exclude_toggle", "Toggle points"),
-                        #   actionButton("exclude_reset", "Reset")
-                        # ))
                         )
                 )
               )

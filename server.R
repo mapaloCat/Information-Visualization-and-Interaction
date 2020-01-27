@@ -402,32 +402,6 @@ shinyServer(function(input, output) {
     keeprows = rep(TRUE, nrow(europe.clipped))
   )
   
-  # radioInputX = reactive({
-  # 
-  #   switch (input$radio_ggplot1,
-  #           "Area" = "Area",
-  #           "GDP" = "GDP",
-  #           "Inflation" = "Inflation",
-  #           "Life expectancy" = "Life.expect",
-  #           "Military" = "Military",
-  #           "Population growth" = "Pop.growth",
-  #           "Unemployment" = "Unemployment"
-  #   )
-  # })
-  # 
-  # radioInputY = reactive({
-  # 
-  #   switch (input$radio_ggplot2,
-  #           "Area" = "Area",
-  #           "GDP" = "GDP",
-  #           "Inflation" = "Inflation",
-  #           "Life expectancy" = "Life.expect",
-  #           "Military" = "Military",
-  #           "Population growth" = "Pop.growth",
-  #           "Unemployment" = "Unemployment"
-  #   )
-  # })
-  
   output$ggplot_toggle_points <- renderPlot({
     # Plot the kept and excluded points as two separate data sets
     keep    <- europe.clipped[ vals$keeprows, , drop = FALSE]
@@ -519,30 +493,6 @@ shinyServer(function(input, output) {
   observeEvent(input$exclude_reset, {
     vals$keeprows <- rep(TRUE, nrow(europe.clipped))
   })
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
   
@@ -699,7 +649,7 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
         c2$Country = as.factor(c2$Country)
         c2$cluster = as.factor(c2$cluster)
         europe.clipped_Kmeans_map = merge(europe.clipped, c2, by = "Country")
-        return(tmap_leaflet(tm_shape(europe.clipped_Kmeans_map) + tm_polygons("cluster", id="cluster", pallete="Greens") +
+        return(tmap_leaflet(tm_shape(europe.clipped_Kmeans_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                               tmap_mode("view")))
       }
       else {
@@ -750,7 +700,7 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
                 c1$Country = as.factor(c1$Country)
                 c1$cluster = as.factor(c1$cluster)
                 europe.clipped_HC_map = merge(europe.clipped, c1, by = "Country")
-                return(tmap_leaflet(tm_shape(europe.clipped_HC_map) + tm_polygons("cluster", id="cluster", pallete="Greens") +
+                return(tmap_leaflet(tm_shape(europe.clipped_HC_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                                       tmap_mode("view")))
           } else {
             hist(rnorm(100))
@@ -808,7 +758,7 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
           c2$Country = as.factor(c2$Country)
           c2$cluster = as.factor(c2$cluster)
           europe.clipped_PCA_Kmeans_map = merge(europe.clipped, c2, by = "Country")
-          return(tmap_leaflet(tm_shape(europe.clipped_PCA_Kmeans_map) + tm_polygons("cluster", id="cluster", pallete="Greens") +
+          return(tmap_leaflet(tm_shape(europe.clipped_PCA_Kmeans_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                                 tmap_mode("view")))
         }
         else {
@@ -865,7 +815,7 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
             c1$Country = as.factor(c1$Country)
             c1$cluster = as.factor(c1$cluster)
             europe.clipped_PCA_HC_map = merge(europe.clipped, c1, by = "Country")
-            return(tmap_leaflet(tm_shape(europe.clipped_PCA_HC_map) + tm_polygons("cluster", id="cluster", pallete="Greens") +
+            return(tmap_leaflet(tm_shape(europe.clipped_PCA_HC_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                                   tmap_mode("view")))
           
         } else {
@@ -886,15 +836,15 @@ map_function = function(variable) {
   } else {
     # tmap_leaflet(tm_shape(europe.clipped) + tm_polygons(variable[[1]], id=variable[[1]], breaks = breaks) + 
     #                tmap_mode("view"))
-    tmap_leaflet(tm_shape(europe.clipped) + tm_polygons(variable[[1]], id=variable[[1]], style = "cont", palette = "Greens") + 
+    tmap_leaflet(tm_shape(europe.clipped) + tm_polygons(variable[[1]], id="Country", style = "cont", palette = "YlOrRd") + 
                    tmap_mode("view"))
   }
 }
 
-map_function_clustering = function() {
-  tmap_leaflet(tm_shape(europe.clipped) + tm_polygons(variable, id=variable, pallete="Greens") + 
-                 tmap_mode("view"))
-}
+# map_function_clustering = function() {
+#   tmap_leaflet(tm_shape(europe.clipped) + tm_polygons(variable, id=variable, pallete="Greens") + 
+#                  tmap_mode("view"))
+# }
 
 pca_function = function() {
   eu = read.csv("europe.csv")
