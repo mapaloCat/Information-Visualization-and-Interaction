@@ -480,7 +480,7 @@ shinyServer(function(input, output) {
     yaxis <- as.character(input$radio_ggplot1)
     boxplot_title <- paste("Box Plot for", yaxis, sep = " ")
 
-    plot_ly(y = ~selected_keepX(), type="box") %>%
+    plot_ly(y = ~selected_keepX(), type="box", name = "All countries", line = list(color = 'rgb(51,102,0)')) %>%
       layout(title = boxplot_title,
              yaxis = list(
                title = as.character(yaxis)
@@ -493,7 +493,7 @@ shinyServer(function(input, output) {
     yaxis <- as.character(input$radio_ggplot2)
     boxplot_title <- paste("Box Plot for", yaxis, sep = " ")
 
-    plot_ly(y = ~selected_keepY(), type="box") %>%
+    plot_ly(y = ~selected_keepY(), type="box", name = "All countries", line = list(color = 'rgb(204,102,0)')) %>%
       layout(title = boxplot_title,
         yaxis = list(
           title = as.character(yaxis)
