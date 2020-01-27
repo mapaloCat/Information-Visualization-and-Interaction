@@ -177,7 +177,7 @@ body = dashboardBody(
                              status = "primary",
                              width = "12",
                              solidHeader = T,
-                             column(3, radioButtons("radio_ggplot1", label = h3("x coordinate"),
+                             column(1, radioButtons("radio_ggplot1", label = h3("X AXIS"),
                                                     choices = list("GDP" = "GDP",
                                                                    "Inflation" = "Inflation",
                                                                    "Life expectancy" = "Life.expect",
@@ -185,7 +185,7 @@ body = dashboardBody(
                                                                    "Population growth" = "Pop.growth",
                                                                    "Unemployment" = "Unemployment"), 
                                                     selected = "Life.expect")),
-                             column(3, radioButtons("radio_ggplot2", label = h3("y coordinate"),
+                             column(1, radioButtons("radio_ggplot2", label = h3("Y AXIS"),
                                                     choices = list("GDP" = "GDP",
                                                                    "Inflation" = "Inflation",
                                                                    "Life expectancy" = "Life.expect",
@@ -193,14 +193,16 @@ body = dashboardBody(
                                                                    "Population growth" = "Pop.growth",
                                                                    "Unemployment" = "Unemployment"), 
                                                     selected = "GDP")),
-                             column(6, plotOutput("ggplot_toggle_points", height = 350,
+                             column(4, plotOutput("ggplot_toggle_points", height = 350,
                                                   click = "toggle_points_click",
                                                   brush = brushOpts(
                                                     id = "toggle_points_brush"
                                                   )
                              ),
                              actionButton("exclude_toggle", "Toggle points"),
-                             actionButton("exclude_reset", "Reset"))
+                             actionButton("exclude_reset", "Reset")),
+                             column(3, plotlyOutput("boxplotX_toggle", height = "100%")),
+                             column(3, plotlyOutput("boxplotY_toggle", height = "100%"))
                            )
                         #    ,
                         # column(6, box(

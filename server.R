@@ -398,18 +398,6 @@ shinyServer(function(input, output) {
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   vals <- reactiveValues(
     keeprows = rep(TRUE, nrow(europe.clipped))
   )
@@ -452,6 +440,65 @@ shinyServer(function(input, output) {
       geom_smooth(method = loess, fullrange = TRUE, color = "red", fill = "red") +
       geom_point(data = exclude, shape = 21, fill = NA, color = "black", alpha = 0.25)
       # coord_cartesian(xlim = c(1.5, 5.5), ylim = c(5,35))
+  })
+  
+  selected_keepX <- reactive({
+    keep <- europe.clipped[ vals$keeprows, , drop = FALSE]
+    
+    keepX <- switch (input$radio_ggplot1,
+                    "Area" = keep$Area,
+                    "GDP" = keep$GDP,
+                    "Inflation" = keep$Inflation,
+                    "Life.expect" = keep$Life.expect,
+                    "Military" = keep$Military,
+                    "Pop.growth" = keep$Pop.growth,
+                    "Unemployment" = keep$Unemployment
+            )
+    return(keepX)
+    
+  })
+  
+  selected_keepY <- reactive({
+    keep <- europe.clipped[ vals$keeprows, , drop = FALSE]
+    
+    keepY <- switch (input$radio_ggplot2,
+                     "Area" = keep$Area,
+                     "GDP" = keep$GDP,
+                     "Inflation" = keep$Inflation,
+                     "Life.expect" = keep$Life.expect,
+                     "Military" = keep$Military,
+                     "Pop.growth" = keep$Pop.growth,
+                     "Unemployment" = keep$Unemployment
+    )
+    return(keepY)
+    
+  })
+  
+  
+  output$boxplotX_toggle <- renderPlotly({
+    
+    yaxis <- as.character(input$radio_ggplot1)
+    boxplot_title <- paste("Box Plot for", yaxis, sep = " ")
+
+    plot_ly(y = ~selected_keepX(), type="box") %>%
+      layout(title = boxplot_title,
+             yaxis = list(
+               title = as.character(yaxis)
+             ))
+    
+  })
+  
+  output$boxplotY_toggle <- renderPlotly({
+    
+    yaxis <- as.character(input$radio_ggplot2)
+    boxplot_title <- paste("Box Plot for", yaxis, sep = " ")
+
+    plot_ly(y = ~selected_keepY(), type="box") %>%
+      layout(title = boxplot_title,
+        yaxis = list(
+          title = as.character(yaxis)
+        ))
+    
   })
   
   # Toggle points that are clicked
