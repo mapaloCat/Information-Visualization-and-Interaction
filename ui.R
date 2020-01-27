@@ -100,12 +100,37 @@ body = dashboardBody(
                            #   solidHeader = T,
                            #   plotlyOutput("pie_chart_reactive")
                            # )),
-                           column(6, box(
+                           box(
                              status = "primary",
                              width = "12",
                              solidHeader = T,
-                             plotlyOutput("bar_chart_reactive")
-                           ), align = "center", offset = 3)
+                             column(3, checkboxGroupInput("checkGroupCountries_barChart_1", label = h3("List of Countries"), 
+                                                          choices = list("Austria" = "Austria","Belgium" = "Belgium", "Bulgaria" = "Bulgaria", "Croatia" = "Croatia", "Czech Republic" = "Czech Republic",
+                                                                         "Denmark" = "Denmark", "Estonia" = "Estonia", "Finland" = "Finland", "Germany" = "Germany", "Greece" = "Greece", "Hungary" = "Hungary",
+                                                                         "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy"),
+                                                          selected = "Austria")),
+                             column(3, checkboxGroupInput("checkGroupCountries_barChart_2", label = h3(""), 
+                                                          choices = list("Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
+                                                                         "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia",
+                                                                         "Spain" = "Spain", "Sweden" = "Sweden", "Switzerland" = "Switzerland", "Ukraine" = "Ukraine", "United Kingdom" = "United Kingdom"))),
+                             column(6, plotlyOutput("bar_chart_reactive"))
+                           )
+                           # column(6, 
+                           #        tags$div(align = "left",
+                           #                 class = "multicol",
+                           #                 checkboxGroupInput("checkGroupCountries_barChart", label = h3("List of Countries"), 
+                           #                              choices = list("Austria" = "Austria","Belgium" = "Belgium", "Bulgaria" = "Bulgaria", "Croatia" = "Croatia", "Czech Republic" = "Czech Republic",
+                           #                                             "Denmark" = "Denmark", "Estonia" = "Estonia", "Finland" = "Finland", "Germany" = "Germany", "Greece" = "Greece", "Hungary" = "Hungary",
+                           #                                             "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy", "Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
+                           #                                             "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia",
+                           #                                             "Spain" = "Spain", "Sweden" = "Sweden", "Switzerland" = "Switzerland", "Ukraine" = "Ukraine", "United Kingdom" = "United Kingdom"),
+                           #                              selected = "Austria"))),
+                           # column(6, box(
+                           #   status = "primary",
+                           #   width = "12",
+                           #   solidHeader = T,
+                           #   plotlyOutput("bar_chart_reactive")
+                           # ), align = "center")
                          )
                 ),
                 tabPanel(p(icon("area-chart"), "Radar Chart Visualization"),

@@ -49,6 +49,9 @@ suppressPackageStartupMessages(library(sf))
 world <- st_as_sf(rnaturalearth::countries110)
 europe <- dplyr::filter(world, region_un=="Europe" & name!='Russia')
 
+europe <- europe %>% 
+  mutate(sovereignt = str_replace(sovereignt, "Macedonia", "North Macedonia"))
+
 names(europe)[names(europe) == 'sovereignt'] <- 'Country'
 europe = merge(europe, eu, by="Country")
 
@@ -168,7 +171,8 @@ shinyServer(function(input, output) {
   })
   
   data <- reactive({
-    selected_countries = sort(c(input$country_1, input$country_2_pick, input$country_3_pick, input$country_4_pick, input$country_5_pick))
+    # selected_countries = sort(c(input$country_1, input$country_2_pick, input$country_3_pick, input$country_4_pick, input$country_5_pick))
+    selected_countries = sort(c(input$checkGroupCountries_barChart_1, input$checkGroupCountries_barChart_2))
     ind = which(europe.clipped$Country %in% selected_countries)
     x = pieChartVariableInput()[ind]
     x = c(x, mean(pieChartVariableInput(), na.rm = TRUE))
