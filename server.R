@@ -27,6 +27,7 @@ library(NbClust)
 library(DT)
 library(corrgram)
 library(GGally)
+library(stringr)
 
 # ADAPT EUROPE DATABASE
 eu[nrow(eu)+10,] = NA
@@ -543,6 +544,12 @@ shinyServer(function(input, output) {
     })
   })
   
+  observeEvent(input$display,{
+    output$pairs_plot_clustering = renderPlotly({
+      cluster_function(select_algorithm(),select_nclusters(), "pairs_plot", select_pca_checkbox(), select_npca_dimensions())
+    })
+  })
+  
   observeEvent(input$clear, {
     output$map_cluster = renderText({
       NULL
@@ -561,6 +568,12 @@ shinyServer(function(input, output) {
   observeEvent(input$clear, {
     output$clustering_validation = renderText({
       NULL
+    })
+  })
+  observeEvent(input$clear, {
+    output$pairs_plot_clustering = renderPlotly({
+      plotly_empty() %>% 
+        config(staticPlot = TRUE)
     })
   })
   
@@ -655,6 +668,22 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
         europe.clipped_Kmeans_map = merge(europe.clipped, c2, by = "Country")
         return(tmap_leaflet(tm_shape(europe.clipped_Kmeans_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                               tmap_mode("view")))
+      } else if(graph=="pairs_plot") {
+        eu.rows= read.csv("europe.csv")
+        rownames(eu.rows) = eu.rows$Country
+        eu.orig = eu.rows
+        eu.rows$Country = NULL
+        eu.scaled = as.data.frame(scale(eu.rows))
+        set.seed(111)
+        km = kmeans(eu.scaled,nclusters)
+        c2 = data.frame(km$cluster)
+        colnames(c2) = c("cluster")
+        c2$Country = rownames(c2)
+        c2$Country = as.factor(c2$Country)
+        c2$cluster = as.factor(c2$cluster)
+        eu.kmeans = merge(eu.orig, c2, by = "Country")
+        pm <- GGally::ggpairs(eu.kmeans[,-c(1,2)], aes(color = cluster))
+        return(pm)
       }
       else {
         hist(rnorm(100))
@@ -706,7 +735,23 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
                 europe.clipped_HC_map = merge(europe.clipped, c1, by = "Country")
                 return(tmap_leaflet(tm_shape(europe.clipped_HC_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                                       tmap_mode("view")))
-          } else {
+            } else if (graph=="pairs_plot"){
+                eu.rows= read.csv("europe.csv")
+                rownames(eu.rows) = eu.rows$Country
+                eu.orig = eu.rows
+                eu.rows$Country = NULL
+                eu.scaled = as.data.frame(scale(eu.rows))
+                hierarchical.cluster.ward.D2 = hclust(dist(eu.scaled, method = "euclidean"),method = "ward.D2")
+                c1 = data.frame(cutree(hierarchical.cluster.ward.D2, nclusters))
+                colnames(c1) = c("cluster")
+                c1$Country = rownames(c1)
+                c1$Country = as.factor(c1$Country)
+                c1$cluster = as.factor(c1$cluster)
+                eu.HC = merge(eu.orig, c1, by = "Country")
+                pm <- GGally::ggpairs(eu.HC[,-c(1,2)], aes(color = cluster))
+                return(pm)
+          }
+      else {
             hist(rnorm(100))
           }
     } else if(algorithm == "Kmeans" && pca==T){
@@ -764,6 +809,29 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
           europe.clipped_PCA_Kmeans_map = merge(europe.clipped, c2, by = "Country")
           return(tmap_leaflet(tm_shape(europe.clipped_PCA_Kmeans_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                                 tmap_mode("view")))
+        } else if (graph=="pairs_plot"){
+            eu = read.csv("europe.csv")
+            rownames(eu) = eu$Country
+            eu.orig = eu
+            eu.pca_map = PCA(eu, quali.sup=1, ncp=9, scale.unit = T, graph = F)
+            eu.pca_map = data.frame(eu.pca_map$ind$coord)
+            if (nDimensions == 1){
+              eu.pca_map = eu.pca_map[,1:1, drop=F]
+              set.seed(1)
+              km = kmeans(eu.pca_map, nclusters)
+            } else {
+              set.seed(1)
+              km = kmeans(eu.pca_map[,1:nDimensions],nclusters)
+            }
+            c2 = data.frame(km$cluster)
+            colnames(c2) = c("cluster")
+            c2$Country = eu$Country
+            c2$Country = as.character(c2$Country)
+            c2$Country = as.factor(c2$Country)
+            c2$cluster = as.factor(c2$cluster)
+            eu_PCA_Kmeans = merge(eu.orig, c2, by = "Country")
+            pm <- GGally::ggpairs(eu_PCA_Kmeans[,-c(1,2)], aes(color = cluster))
+            return(pm) 
         }
         else {
           hist(0)
@@ -822,7 +890,29 @@ cluster_function = function(algorithm, nclusters, graph, pca, nDimensions) {
             return(tmap_leaflet(tm_shape(europe.clipped_PCA_HC_map) + tm_polygons("cluster", id="Country", pallete="Greens") +
                                   tmap_mode("view")))
           
-        } else {
+        } else if(graph=="pairs_plot"){
+            eu = read.csv("europe.csv")
+            rownames(eu) = eu$Country
+            eu.orig = eu
+            eu.HC_pca_map = PCA(eu, quali.sup=1, ncp=9, scale.unit = T, graph = F)
+            eu.HC_pca_map = data.frame(eu.HC_pca_map$ind$coord)
+            if (nDimensions == 1){
+              eu.HC_pca_map = eu.HC_pca_map[,1:1, drop=F]
+              hierarchical.cluster.ward.D2_map= hclust(dist(eu.HC_pca_map, method = "euclidean"),method = "ward.D2")
+            } else {
+              hierarchical.cluster.ward.D2_map= hclust(dist(eu.HC_pca_map[,1:nDimensions], method = "euclidean"),method = "ward.D2")
+            }
+            c1 = data.frame(cutree(hierarchical.cluster.ward.D2_map, nclusters))
+            colnames(c1) = c("cluster")
+            c1$Country = eu$Country
+            c1$Country = as.character(c1$Country)
+            c1$Country = as.factor(c1$Country)
+            c1$cluster = as.factor(c1$cluster)
+            eu.PCA_HC = merge(eu.orig, c1, by = "Country")
+            pm <- GGally::ggpairs(eu.PCA_HC[,-c(1,2)], aes(color = cluster))
+            return(pm) 
+        }
+      else {
           hist(0)
         }
         

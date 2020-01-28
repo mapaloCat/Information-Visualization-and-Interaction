@@ -50,7 +50,8 @@ body = dashboardBody(
                                   selectInput("variable_mapSimple_1", "Attribute:",
                                               choices = c("None","Area", "GDP", "Inflation",
                                                           "Life expectancy", "Military", "Population growth",
-                                                          "Unemployment"))
+                                                          "Unemployment")),
+                                  align = "center", offset = 3
                            )
                          ),
                          fluidRow(tags$style(type = "text/css", "#map_simple_1 {height: calc(100vh - 80px) !important;}"),
@@ -79,20 +80,20 @@ body = dashboardBody(
                              plotlyOutput("bar_chart_static")
                            ))
                          ),
-                         fluidRow(
-                           column(2,
-                                  selectInput("country_1", "Country 1:",
-                                              choices = c("Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
-                                                          "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
-                                                          "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
-                                                          "Netherlands", "Norway", "Poland", "Portugal", "Slovakia",
-                                                          "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom")), offset = 1
-                           ),
-                           column(2, uiOutput("country_2")),
-                           column(2, uiOutput("country_3")),
-                           column(2, uiOutput("country_4")),
-                           column(2, uiOutput("country_5"))
-                         ),
+                         # fluidRow(
+                         #   column(2,
+                         #          selectInput("country_1", "Country 1:",
+                         #                      choices = c("Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
+                         #                                  "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
+                         #                                  "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
+                         #                                  "Netherlands", "Norway", "Poland", "Portugal", "Slovakia",
+                         #                                  "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom")), offset = 1
+                         #   ),
+                         #   column(2, uiOutput("country_2")),
+                         #   column(2, uiOutput("country_3")),
+                         #   column(2, uiOutput("country_4")),
+                         #   column(2, uiOutput("country_5"))
+                         # ),
                          fluidRow(
                            # column(6, box(
                            #   status = "primary",
@@ -346,6 +347,9 @@ body = dashboardBody(
                   tabPanel("Dendogram clustering (only for HC)",
                            includeMarkdown("www/dendogram_explanation.md"),
                            plotOutput("dendrogram", height = "450px")
+                  ),
+                  tabPanel("Generalized Pairs Plot",
+                           withSpinner(plotlyOutput("pairs_plot_clustering", height = "800px"))
                   )
                 ),
                 tabsetPanel(
