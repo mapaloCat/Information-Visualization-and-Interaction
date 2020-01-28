@@ -57,7 +57,7 @@ body = dashboardBody(
                          fluidRow(tags$style(type = "text/css", "#map_simple_1 {height: calc(100vh - 80px) !important;}"),
                                   leafletOutput("map_simple_1", height = "100%"))
                 ),
-                tabPanel(p(icon("pie-chart"), "Pie and Bar Chart Visualization"),
+                tabPanel(p(icon("pie-chart"), "Pie/Bar/Radar Chart Visualization"),
                          fluidRow(
                            column(4,
                                   selectInput("variable_pie_chart", "Attribute:",
@@ -108,36 +108,17 @@ body = dashboardBody(
                              column(3, checkboxGroupInput("checkGroupCountries_barChart_1", label = h3("List of Countries"), 
                                                           choices = list("Austria" = "Austria","Belgium" = "Belgium", "Bulgaria" = "Bulgaria", "Croatia" = "Croatia", "Czech Republic" = "Czech Republic",
                                                                          "Denmark" = "Denmark", "Estonia" = "Estonia", "Finland" = "Finland", "Germany" = "Germany", "Greece" = "Greece", "Hungary" = "Hungary",
-                                                                         "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy"),
-                                                          selected = "Austria")),
+                                                                         "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy"))),
                              column(3, checkboxGroupInput("checkGroupCountries_barChart_2", label = h3(""), 
                                                           choices = list("Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
                                                                          "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia",
                                                                          "Spain" = "Spain", "Sweden" = "Sweden", "Switzerland" = "Switzerland", "Ukraine" = "Ukraine", "United Kingdom" = "United Kingdom"))),
                              column(6, plotlyOutput("bar_chart_reactive"))
                            )
-                           # column(6, 
-                           #        tags$div(align = "left",
-                           #                 class = "multicol",
-                           #                 checkboxGroupInput("checkGroupCountries_barChart", label = h3("List of Countries"), 
-                           #                              choices = list("Austria" = "Austria","Belgium" = "Belgium", "Bulgaria" = "Bulgaria", "Croatia" = "Croatia", "Czech Republic" = "Czech Republic",
-                           #                                             "Denmark" = "Denmark", "Estonia" = "Estonia", "Finland" = "Finland", "Germany" = "Germany", "Greece" = "Greece", "Hungary" = "Hungary",
-                           #                                             "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy", "Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
-                           #                                             "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia",
-                           #                                             "Spain" = "Spain", "Sweden" = "Sweden", "Switzerland" = "Switzerland", "Ukraine" = "Ukraine", "United Kingdom" = "United Kingdom"),
-                           #                              selected = "Austria"))),
-                           # column(6, box(
-                           #   status = "primary",
-                           #   width = "12",
-                           #   solidHeader = T,
-                           #   plotlyOutput("bar_chart_reactive")
-                           # ), align = "center")
-                         )
-                ),
-                tabPanel(p(icon("area-chart"), "Radar Chart Visualization"),
+                         ),
                          fluidRow(
                            column(12,h3("Radar Chart visualization of the percentage of the average of each variable per Country"), align = "center")
-                           ),
+                         ),
                          fluidRow(
                            column(3,
                                   selectInput("country_radar_chart", "Selected Country:",
@@ -159,7 +140,33 @@ body = dashboardBody(
                          fluidRow(
                            plotlyOutput("radar_chart", height = "100%")
                          )
-                         ),
+                ),
+                # tabPanel(p(icon("area-chart"), "Radar Chart Visualization"),
+                #          fluidRow(
+                #            column(12,h3("Radar Chart visualization of the percentage of the average of each variable per Country"), align = "center")
+                #            ),
+                #          fluidRow(
+                #            column(3,
+                #                   selectInput("country_radar_chart", "Selected Country:",
+                #                               choices = c("Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
+                #                                           "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
+                #                                           "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
+                #                                           "Netherlands", "Norway", "Poland", "Portugal", "Slovakia",
+                #                                           "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom")), align = "center", offset = 3
+                #            ),
+                #            column(3,
+                #                   selectInput("country_radar_chart2", "Selected Country to Compare With:",
+                #                               choices = c("None","Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
+                #                                           "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
+                #                                           "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
+                #                                           "Netherlands", "Norway", "Poland", "Portugal", "Slovakia",
+                #                                           "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom"), selected = "None"), align = "center"
+                #            )
+                #          ),
+                #          fluidRow(
+                #            plotlyOutput("radar_chart", height = "100%")
+                #          )
+                #          ),
                 tabPanel(p(icon("table"), "Scatter Plot Visualization"),
                          fluidRow(
                            column(12,h3("Is there any correlation between the different attributes of the dataset?"), align = "center")
@@ -241,7 +248,7 @@ body = dashboardBody(
                              width = "12",
                              solidHeader = T,
                              status = "primary",
-                             sliderInput("variance_slider", "Choose the number of components you want", 1,7,1),
+                             sliderInput("variance_slider", "Select the number of components you want to include", 1,7,1),
                              plotlyOutput("var_explained", height = "183px"))
                 ),
                 column(5,
@@ -287,8 +294,9 @@ body = dashboardBody(
                       width = "12",
                       solidHeader = T,
                       status = "primary",
-                      numericInput("dimension_contrib", "Choose one dimension", value = 1, min = 1, max = 7, width = "300px"),
-                      plotOutput("pca_contribution", width = "750px", height = "473px")
+                      # numericInput("dimension_contrib", "Choose one dimension", value = 1, min = 1, max = 7, width = "300px"),
+                      plotOutput("pca_contribution_1", width = "750px", height = "275px"),
+                      plotOutput("pca_contribution_2", width = "750px", height = "275px")
                   )
                 )
               ),
@@ -318,7 +326,7 @@ body = dashboardBody(
                      ),
                      column(6,
                             conditionalPanel(condition = "input.pca_checkbox == 1",
-                                             numericInput("pca_nDimensions", strong("Choose the number of PCA components to be included (between 1 and 7)"), value = 1, min = 1, max = 7)
+                                             numericInput("pca_nDimensions", strong("Select the number of PCA components to be included (between 1 and 7)"), value = 1, min = 1, max = 7)
                             )
                      )
                    )

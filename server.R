@@ -597,8 +597,12 @@ shinyServer(function(input, output) {
     variance_explained_bars_function()
   })
   
-  output$pca_contribution = renderPlot({
-    variance_contribution_function(input$dimension_contrib)
+  output$pca_contribution_1 = renderPlot({
+    variance_contribution_function(input$first_dimension)
+  })
+  
+  output$pca_contribution_2 = renderPlot({
+    variance_contribution_function(input$second_dimension)
   })
   
 })

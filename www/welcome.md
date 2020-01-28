@@ -69,6 +69,7 @@ The application has leveraged functions of different R packages. Here is the com
 * corrgram
 * GGally
 * shinycssloaders
+* stringr
 
 
 Execute the following command to successfully install a new package in your R environment:
