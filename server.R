@@ -27,6 +27,7 @@ library(NbClust)
 library(DT)
 library(corrgram)
 library(GGally)
+library(stringr)
 
 # ADAPT EUROPE DATABASE
 eu[nrow(eu)+10,] = NA
