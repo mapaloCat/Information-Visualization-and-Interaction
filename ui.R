@@ -111,7 +111,7 @@ body = dashboardBody(
                                                                          "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy"))),
                              column(3, checkboxGroupInput("checkGroupCountries_barChart_2", label = h3(""), 
                                                           choices = list("Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
-                                                                         "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia",
+                                                                         "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia", "Slovenia" = "Slovenia",
                                                                          "Spain" = "Spain", "Sweden" = "Sweden", "Switzerland" = "Switzerland", "Ukraine" = "Ukraine", "United Kingdom" = "United Kingdom"))),
                              column(6, plotlyOutput("bar_chart_reactive"))
                            )
@@ -125,7 +125,7 @@ body = dashboardBody(
                                               choices = c("Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
                                                           "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
                                                           "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
-                                                          "Netherlands", "Norway", "Poland", "Portugal", "Slovakia",
+                                                          "Netherlands", "Norway", "Poland", "Portugal", "Slovakia", "Slovenia",
                                                           "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom")), align = "center", offset = 3
                            ),
                            column(3,
@@ -133,12 +133,13 @@ body = dashboardBody(
                                               choices = c("None","Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
                                                           "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
                                                           "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
-                                                          "Netherlands", "Norway", "Poland", "Portugal", "Slovakia",
+                                                          "Netherlands", "Norway", "Poland", "Portugal", "Slovakia", "Slovenia",
                                                           "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom"), selected = "None"), align = "center"
                            )
                          ),
                          fluidRow(
-                           plotlyOutput("radar_chart", height = "100%")
+                           column(6, plotlyOutput("radar_chart", height = "100%")),
+                           column(6, plotOutput("lollipop_plot"))
                          )
                 ),
                 # tabPanel(p(icon("area-chart"), "Radar Chart Visualization"),

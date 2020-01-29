@@ -1,6 +1,3 @@
-eu = read.csv("europe.csv")
-rownames(eu) = eu$Country
-eu.datatable = read.csv("europe.csv")
 library(shiny)
 library(ggplot2)
 library(grid)
@@ -28,6 +25,11 @@ library(DT)
 library(corrgram)
 library(GGally)
 library(stringr)
+library(hrbrthemes)
+
+eu = read.csv("europe.csv")
+rownames(eu) = eu$Country
+eu.datatable = read.csv("europe.csv")
 
 # ADAPT EUROPE DATABASE
 eu[nrow(eu)+10,] = NA
@@ -276,7 +278,7 @@ shinyServer(function(input, output) {
       temp$Inflation/mean(europe.clipped$Inflation, na.rm = TRUE),
       temp$Life.expect/mean(europe.clipped$Life.expect, na.rm = TRUE),
       temp$Military/mean(europe.clipped$Military, na.rm = TRUE),
-      temp$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
+      # temp$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
       temp$Unemployment/mean(europe.clipped$Unemployment, na.rm = TRUE)
     )*100
     
@@ -284,9 +286,11 @@ shinyServer(function(input, output) {
       plot_ly(
         type = 'scatterpolar',
         r = temp_vector,
-        theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment"),
+        # theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment"),
+        theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Unemployment"),
         mode = 'markers',
-        fill = 'toself'
+        fill = 'toself',
+        fillcolor = 'rgba(168, 216, 234, 0.5)'
       ) %>%
         layout(
           polar = list(
@@ -306,7 +310,7 @@ shinyServer(function(input, output) {
         temp2$Inflation/mean(europe.clipped$Inflation, na.rm = TRUE),
         temp2$Life.expect/mean(europe.clipped$Life.expect, na.rm = TRUE),
         temp2$Military/mean(europe.clipped$Military, na.rm = TRUE),
-        temp2$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
+        # temp2$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
         temp2$Unemployment/mean(europe.clipped$Unemployment, na.rm = TRUE)
       )*100
       
@@ -317,13 +321,17 @@ shinyServer(function(input, output) {
       ) %>%
         add_trace(
           r = temp_vector,
-          theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment"),
-          name = as.character(input$country_radar_chart)
+          # theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment"),
+          theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military", "Unemployment"),
+          name = as.character(input$country_radar_chart),
+          fillcolor = 'rgba(168, 216, 234, 0.5)'
         ) %>%
         add_trace(
           r = temp_vector2,
-          theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment"),
-          name = as.character(input$country_radar_chart2)
+          # theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment"),
+          theta = c("GDP" , "Inflation" , "Life Expectancy" , "Military", "Unemployment"),
+          name = as.character(input$country_radar_chart2),
+          fillcolor = 'rgba(255, 212, 96, 0.5)'
         ) %>%
         layout(
           polar = list(
@@ -334,6 +342,97 @@ shinyServer(function(input, output) {
           )
         )
     }
+  })
+  
+  output$lollipop_plot <- renderPlot({
+    
+    if(input$country_radar_chart2=="None"){
+      
+      selected_country = input$country_radar_chart
+      temp = europe.clipped[which(europe.clipped$Country %in% selected_country),]
+      temp_vector = c(
+        temp$GDP/mean(europe.clipped$GDP, na.rm = TRUE),
+        temp$Inflation/mean(europe.clipped$Inflation, na.rm = TRUE),
+        temp$Life.expect/mean(europe.clipped$Life.expect, na.rm = TRUE),
+        temp$Military/mean(europe.clipped$Military, na.rm = TRUE),
+        # temp$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
+        temp$Unemployment/mean(europe.clipped$Unemployment, na.rm = TRUE)
+      )*100
+      temp_vector <- as.data.frame(t(temp_vector))
+      # colnames(temp_vector) <- c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment")
+      colnames(temp_vector) <- c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Unemployment")
+      
+      # Barplot
+      p <- temp_vector %>% t() %>% as.data.frame() %>% add_rownames() %>% arrange(V1) %>% mutate(rowname=factor(rowname, rowname)) %>%
+        ggplot( aes(x=rowname, y=V1)) +
+        geom_segment( aes(x=rowname ,xend=rowname, y=0, yend=V1), color="grey") +
+        geom_point(size=5, color="#A8D8EA", alpha = 1) +
+        scale_y_continuous(breaks = seq(0, max(temp_vector)+10, by = 10)) +
+        coord_flip() +
+        theme_ipsum() +
+        theme(
+          panel.grid.minor.y = element_blank(),
+          panel.grid.major.y = element_blank(),
+          axis.text = element_text( size=48 ),
+          legend.position="none"
+        ) +
+        # ylim(0,max(temp_vector)+10) +
+        ylab("Percentage %") +
+        xlab("")
+      
+      return(p)
+      
+    }else{
+      
+      selected_country = input$country_radar_chart
+      temp = europe.clipped[which(europe.clipped$Country %in% selected_country),]
+      temp_vector = c(
+        temp$GDP/mean(europe.clipped$GDP, na.rm = TRUE),
+        temp$Inflation/mean(europe.clipped$Inflation, na.rm = TRUE),
+        temp$Life.expect/mean(europe.clipped$Life.expect, na.rm = TRUE),
+        temp$Military/mean(europe.clipped$Military, na.rm = TRUE),
+        # temp$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
+        temp$Unemployment/mean(europe.clipped$Unemployment, na.rm = TRUE)
+      )*100
+      
+      selected_country2 = input$country_radar_chart2
+      temp2 = europe.clipped[which(europe.clipped$Country %in% selected_country2),]
+      temp_vector2 = c(
+        temp2$GDP/mean(europe.clipped$GDP, na.rm = TRUE),
+        temp2$Inflation/mean(europe.clipped$Inflation, na.rm = TRUE),
+        temp2$Life.expect/mean(europe.clipped$Life.expect, na.rm = TRUE),
+        temp2$Military/mean(europe.clipped$Military, na.rm = TRUE),
+        # temp2$Pop.growth/mean(europe.clipped$Pop.growth, na.rm = TRUE),
+        temp2$Unemployment/mean(europe.clipped$Unemployment, na.rm = TRUE)
+      )*100
+      
+      data <- as.data.frame(rbind(temp_vector, temp_vector2))
+      # colnames(data) <- c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Population Growth", "Unemployment")
+      colnames(data) <- c("GDP" , "Inflation" , "Life Expectancy" , "Military" , "Unemployment")
+      row.names(data) <- c("V1", "V2")
+      
+      # Barplot
+      p <- data %>% t() %>% as.data.frame() %>% add_rownames() %>% arrange(V1) %>% mutate(rowname=factor(rowname, rowname)) %>%
+        ggplot( aes(x=rowname, y=V1)) +
+        geom_segment( aes(x=rowname ,xend=rowname, y=V2, yend=V1), color="grey") +
+        geom_point(size=5, color="#A8D8EA", alpha = 1) +
+        geom_point(aes(y=V2), size=5, color='#FFD460', alpha = 1) +
+        scale_y_continuous(breaks = seq(0, max(data)+10, by = 10)) +
+        coord_flip() +
+        theme_ipsum() +
+        theme(
+          panel.grid.minor.y = element_blank(),
+          panel.grid.major.y = element_blank(),
+          axis.text = element_text( size=48 )
+        ) +
+        # ylim(0,max(data)+10) +
+        ylab("Percentage %") +
+        xlab("")
+      
+      return(p)
+    }
+    
+    
   })
   
   output$splom <- renderPlotly({
