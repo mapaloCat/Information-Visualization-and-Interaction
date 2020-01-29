@@ -57,7 +57,7 @@ body = dashboardBody(
                          fluidRow(tags$style(type = "text/css", "#map_simple_1 {height: calc(100vh - 80px) !important;}"),
                                   leafletOutput("map_simple_1", height = "100%"))
                 ),
-                tabPanel(p(icon("pie-chart"), "Pie/Bar/Radar Chart Visualization"),
+                tabPanel(p(icon("chart-bar"), "Heatmap - Bar Chart - Radar Chart Visualization"),
                          fluidRow(
                            column(4,
                                   selectInput("variable_pie_chart", "Attribute:",
@@ -71,7 +71,8 @@ body = dashboardBody(
                              status = "primary",
                              width = "12",
                              solidHeader = T,
-                             plotlyOutput("pie_chart_static")
+                             # plotlyOutput("pie_chart_static")
+                             plotlyOutput("heatmap")
                            )),
                            column(6, box(
                              status = "primary",

@@ -26,6 +26,7 @@ library(corrgram)
 library(GGally)
 library(stringr)
 library(hrbrthemes)
+library(heatmaply)
 
 eu = read.csv("europe.csv")
 rownames(eu) = eu$Country
@@ -208,6 +209,36 @@ shinyServer(function(input, output) {
                yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     }
     
+  })
+  
+  output$heatmap <- renderPlotly({
+    
+    # Matrix format
+    mat <- read.csv("europe.csv")
+    rownames(mat) <- mat[,1]
+    mat <- mat %>% dplyr::select(-Country, -Area)
+    mat <- as.matrix(mat)
+    mat <- scale(mat)
+    
+    p <- heatmaply(mat, 
+                   dendrogram = "none",
+                   xlab = "", ylab = "", 
+                   main = "",
+                   scale = "column",
+                   margins = c(60,100,40,20),
+                   grid_color = "white",
+                   grid_width = 0.00001,
+                   titleX = FALSE,
+                   hide_colorbar = TRUE,
+                   branches_lwd = 0.1,
+                   label_names = c("Country", "Feature", "Normalized Value"),
+                   fontsize_row = 5, fontsize_col = 5,
+                   labCol = colnames(mat),
+                   labRow = rownames(mat),
+                   heatmap_layers = theme(axis.line=element_blank())
+    )
+    
+    return(p)
   })
   
   output$bar_chart_static <- renderPlotly({
