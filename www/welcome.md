@@ -6,42 +6,40 @@ The shiny application is work of:
 <div class="center-block row" >
 
 <div class=col-sm-6>
-  <img class="img-circle" src="bart.jpg" width="120" height = "120"/>
+  <img class="img-circle" src="bart.jpg" width="200" height = "200"/>
   <p> Bart van Rooijen </br>(<a href = "mailto:bart@student.tue.nl">b.w.m.v.rooijen@student.tue.nl</a>)</p>
 </div>
 <div>
-  <img class="img-circle" src="panas.png" width="120" height = "120"/> 
+  <img class="img-circle" src="panas.png" width="200" height = "200"/> 
   <p> Panagiotis Michalopoulos </br>(<a href="mailto:p.michalopoulos1@student.tue.nl">p.michalopoulos1@student.tue.nl</a>)</p>
 </div>
 
 </div> 
 
 ## About the app
-This Shiny application offers a friendly interface so users can explore and analyse Europe´s dataset. The different features are divided into the following tabs:  
+This Shiny application offers a friendly interface to users that want to explore and analyse Europe Stats dataset. The application includes various features that are divided into the following tabs:  
 
-*  **Explore Europe dataset**: This tab allows the user to explore the different variables of the dataset as well as the relationship between themselves. It is conformed by three subtabs:
- * **Dataset**: Here you can find a table that provides features like filtering by value, ordering the variables, costume queries and much more.
- * **Data exploration**: In this tabs allow the user to visualize and compare the different values of the variables by country.
+*  **Explore Europe Stats Dataset**: This tab allows the user to explore the different variables of the dataset and study how those variables are related to each other. It is divided into two subtabs:
+ * **Dataset**: The dataset is presented in the form of a table.
+ * **Data exploration**: This tab includes several exploratory graphs that can be studied to understand the nature of the dataset and the correlation between the different atttributes.
  
-* **Data analysis**: This tab is dedicated to the funcionalities of data analysis against Europe's dataset. It is divided between the following subtabs:
-  	 * **Principal Component Analysis (PCA)**: This tab includes a brief explanation about what PCA is. As well as different visualization graphs to obtain a deeper understanding of the results of applying PCA to Europe's dataset.
-  	 * **Clustering**: This tab includes the possibility of perform two different clusterin algorithms: Hierrachical clustering and Kmeans. In addition it includes different graps options to visualize the results and the Silhoutte graph to validate the peformance of the clustering for each combination. Lastly, it also includes the possibility of performing PCA before the clustering algorithm with the desire number of dimensions selected by the user.
+* **Data analysis**: This tab is dedicated to data analysis tasks. First, it comes with a brief explanation about what PCA is, alongside different visualization graphs to give a better understanding of the effects of applying PCA to Europe Stats dataset. PCA is followed by the option to perform two different clustering algorithms: Hierrachical clustering and Kmeans. In addition to multiple visualization graphs that depict the results of clustering, a Silhoutte graph is present to validate the peformance of the applied clustering algorithm.
  
 
 ## About the dataset
-The Europe's dataset contains several statistics on european countries and can be effectively analyzed by means of hierarchical clustering. It is conformed by the following variables:  
+The Europe Stats Dataset contains statistics of several european countries and it can be effectively analyzed by means of hierarchical clustering. It includes the following variables:  
 
-* **Country**:(numeric) A list of 28 countries from Europe. A curiosity of this data set is that France is not included. 
-*  **Area**:(Int) It represents the area of each country in km².
-*  **GDP**:(Int) Stands for **Gross Domestic Product** and the is express in Euros.
-*  **Inflation**:(numeric) It represents the inflation of each of the countries.
+* **Country**:(char) A list of 28 european countries. 
+*  **Area**:(numeric) It represents the area of each country in km².
+*  **GDP**:(numeric) Stands for **Gross Domestic Product** in Euros.
+*  **Inflation**:(numeric) It represents the inflation of each country.
 *  **Life.expect**:(numeric) It represents the average life expectency of each country in years.
 *  **Military**:(numeric) It represents the military power of each country as a percentage of their GDP.
 *  **Pop.growth**:(numeric) It represents the population growth of each country compared to the previous year.
 *  **Unemployment**:(numeric) It represents the unemployment rate of each country.
 
 ## Packages and libraries
-The application has leveraged functions of different R packages. Here is the complete list of packages that have been used:
+The application is built upon functions of different R packages. This is the complete list of packages that have been used:
 
 * shiny
 * shinydashoard
@@ -70,6 +68,8 @@ The application has leveraged functions of different R packages. Here is the com
 * GGally
 * shinycssloaders
 * stringr
+* hrbrthemes
+* heatmaply
 
 
 Execute the following command to successfully install a new package in your R environment:
