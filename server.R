@@ -229,7 +229,7 @@ shinyServer(function(input, output) {
                    grid_color = "white",
                    grid_width = 0.00001,
                    titleX = FALSE,
-                   hide_colorbar = TRUE,
+                   hide_colorbar = FALSE,
                    branches_lwd = 0.1,
                    label_names = c("Country", "Feature", "Normalized Value"),
                    fontsize_row = 5, fontsize_col = 5,
