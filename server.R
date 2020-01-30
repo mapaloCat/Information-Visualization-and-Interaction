@@ -496,7 +496,7 @@ shinyServer(function(input, output) {
         )
       ) %>%
       layout(
-        title= 'Europe Data Set',
+        title= 'Europe Stats',
         hovermode='closest',
         dragmode= 'select',
         plot_bgcolor='rgba(240,240,240, 0.95)',

@@ -16,7 +16,7 @@ sidebar = dashboardSidebar(
   sidebarMenu(
     style = "position: fixed; overflow: visible;",
     menuItem("Welcome!", tabName = "welcome", icon = icon("globe")),
-    menuItem("Explore Europe dataset", tabName = "explore", icon = icon("fas fa-database"),
+    menuItem("Explore Europe Stats", tabName = "explore", icon = icon("fas fa-database"),
              menuSubItem("Dataset", tabName = "dataset"),
              menuSubItem("Data Exploration", tabName = "data_exploration")),
     menuItem("Data analysis", tabName = "analysis", icon = icon("fas fa-search")
@@ -109,20 +109,20 @@ body = dashboardBody(
                              column(3, checkboxGroupInput("checkGroupCountries_barChart_1", label = h3("List of Countries"), 
                                                           choices = list("Austria" = "Austria","Belgium" = "Belgium", "Bulgaria" = "Bulgaria", "Croatia" = "Croatia", "Czech Republic" = "Czech Republic",
                                                                          "Denmark" = "Denmark", "Estonia" = "Estonia", "Finland" = "Finland", "Germany" = "Germany", "Greece" = "Greece", "Hungary" = "Hungary",
-                                                                         "Iceland" = "Iceland", "Ireland" = "Ireland", "Italy" = "Italy"))),
+                                                                         "Iceland" = "Iceland", "Ireland" = "Ireland"))),
                              column(3, checkboxGroupInput("checkGroupCountries_barChart_2", label = h3(""), 
-                                                          choices = list("Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
+                                                          choices = list("Italy" = "Italy", "Latvia" = "Latvia", "Lithuania" = "Lithuania", "Luxembourg" = "Luxembourg",
                                                                          "Netherlands" = "Netherlands", "Norway" = "Norway", "Poland" = "Poland", "Portugal" = "Portugal", "Slovakia" = "Slovakia", "Slovenia" = "Slovenia",
                                                                          "Spain" = "Spain", "Sweden" = "Sweden", "Switzerland" = "Switzerland", "Ukraine" = "Ukraine", "United Kingdom" = "United Kingdom"))),
                              column(6, plotlyOutput("bar_chart_reactive"))
                            )
                          ),
                          fluidRow(
-                           column(12,h3("Radar Chart visualization of the percentage of the average of each variable per Country"), align = "center")
+                           column(12,h3("Radar Chart visualization of the percentage of the average of each attribute per Country"), align = "center")
                          ),
                          fluidRow(
                            column(3,
-                                  selectInput("country_radar_chart", "Selected Country:",
+                                  selectInput("country_radar_chart", "Select Country:",
                                               choices = c("Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
                                                           "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
                                                           "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
@@ -130,7 +130,7 @@ body = dashboardBody(
                                                           "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom")), align = "center", offset = 3
                            ),
                            column(3,
-                                  selectInput("country_radar_chart2", "Selected Country to Compare With:",
+                                  selectInput("country_radar_chart2", "Select Country to Compare With:",
                                               choices = c("None","Austria","Belgium", "Bulgaria", "Croatia", "Czech Republic",
                                                           "Denmark", "Estonia", "Finland", "Germany", "Greece", "Hungary",
                                                           "Iceland", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg",
@@ -175,7 +175,7 @@ body = dashboardBody(
                          ),
                          fluidRow(
                            column(12, box(
-                             h4(strong("Looking at all pairwise combinations of sequential attributes in scatterplots using the function splom alongside plotly.")),
+                             h4(strong("Looking at all pairwise combinations of sequential attributes in scatterplots using splom function.")),
                              status = "primary",
                              width = "12",
                              solidHeader = T,
@@ -377,7 +377,7 @@ body = dashboardBody(
   )
 
 
-header =  dashboardHeader(title = "Europe",
+header =  dashboardHeader(title = "Europe Stats",
                 tags$li(a(onclick = "openTab('welcome')",
                           href = NULL,
                           icon("home"),
