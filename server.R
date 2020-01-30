@@ -235,6 +235,7 @@ shinyServer(function(input, output) {
                    fontsize_row = 5, fontsize_col = 5,
                    labCol = colnames(mat),
                    labRow = rownames(mat),
+                   colors = grDevices::colorRampPalette(RColorBrewer::brewer.pal(9, "YlOrRd")),
                    heatmap_layers = theme(axis.line=element_blank())
     )
     
