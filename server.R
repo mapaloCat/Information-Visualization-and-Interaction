@@ -88,14 +88,25 @@ shinyServer(function(input, output) {
   
   pieChartVariableInput = reactive({
     
-    switch (input$variable_pie_chart,
-            "None" = NULL,
-            "Area" = europe.clipped$Area,
+    # switch (input$variable_pie_chart,
+    #         "None" = NULL,
+    #         "Area" = europe.clipped$Area,
+    #         "GDP" = europe.clipped$GDP,
+    #         "Inflation" = europe.clipped$Inflation,
+    #         "Life expectancy" = europe.clipped$Life.expect,
+    #         "Military" = europe.clipped$Military,
+    #         "Population growth" = europe.clipped$Pop.growth,
+    #         "Unemployment" = europe.clipped$Unemployment
+    # )
+    
+    clickData <- event_data("plotly_click", source = "heatmap")
+    
+    switch (clickData[["x"]],
             "GDP" = europe.clipped$GDP,
             "Inflation" = europe.clipped$Inflation,
-            "Life expectancy" = europe.clipped$Life.expect,
+            "Life.expect" = europe.clipped$Life.expect,
             "Military" = europe.clipped$Military,
-            "Population growth" = europe.clipped$Pop.growth,
+            "Pop.growth" = europe.clipped$Pop.growth,
             "Unemployment" = europe.clipped$Unemployment
     )
   })
@@ -198,18 +209,19 @@ shinyServer(function(input, output) {
     return(data)
   })
   
-  output$pie_chart_static <- renderPlotly({
-    
-    variable = input$variable_pie_chart
-    if(variable!="None"){
-      plot_ly(europe.clipped, labels = ~Country, values = ~pieChartVariableInput()) %>%
-        add_pie(hole = 0.6) %>%
-        layout(title = as.character(variable),  showlegend = F,
-               xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-    }
-    
-  })
+  # output$pie_chart_static <- renderPlotly({
+  #   
+  #   variable = input$variable_pie_chart
+  #   if(variable!="None"){
+  #     plot_ly(europe.clipped, labels = ~Country, values = ~pieChartVariableInput()) %>%
+  #       add_pie(hole = 0.6) %>%
+  #       layout(title = as.character(variable),  showlegend = F,
+  #              xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+  #              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  #   }
+  #   
+  # })
+  
   
   output$heatmap <- renderPlotly({
     
@@ -220,33 +232,47 @@ shinyServer(function(input, output) {
     mat <- as.matrix(mat)
     mat <- scale(mat)
     
-    p <- heatmaply(mat, 
-                   dendrogram = "none",
-                   xlab = "", ylab = "", 
-                   main = "",
-                   scale = "column",
-                   margins = c(60,100,40,20),
-                   grid_color = "white",
-                   grid_width = 0.00001,
-                   titleX = FALSE,
-                   hide_colorbar = FALSE,
-                   branches_lwd = 0.1,
-                   label_names = c("Country", "Feature", "Normalized Value"),
-                   fontsize_row = 5, fontsize_col = 5,
-                   labCol = colnames(mat),
-                   labRow = rownames(mat),
-                   colors = grDevices::colorRampPalette(RColorBrewer::brewer.pal(9, "YlOrRd")),
-                   heatmap_layers = theme(axis.line=element_blank())
-    )
+    # p <- heatmaply(mat, 
+    #                dendrogram = "none",
+    #                xlab = "", ylab = "", 
+    #                main = "",
+    #                scale = "column",
+    #                margins = c(60,100,40,20),
+    #                grid_color = "white",
+    #                grid_width = 0.00001,
+    #                titleX = FALSE,
+    #                hide_colorbar = FALSE,
+    #                branches_lwd = 0.1,
+    #                label_names = c("Country", "Feature", "Normalized Value"),
+    #                fontsize_row = 5, fontsize_col = 5,
+    #                labCol = colnames(mat),
+    #                labRow = rownames(mat),
+    #                colors = grDevices::colorRampPalette(RColorBrewer::brewer.pal(9, "YlOrRd")),
+    #                heatmap_layers = theme(axis.line=element_blank())
+    # )
+    
+    p <- plot_ly(source = "heatmap") %>%
+      add_heatmap(
+        x = colnames(mat), y = rownames(mat),
+        z = mat,
+        colors = "YlOrRd",
+        type = "heatmap"
+      )%>%
+      layout(yaxis = list(dtick = 1))
     
     return(p)
   })
   
+  
+  
   output$bar_chart_static <- renderPlotly({
     
-    variable = input$variable_pie_chart
+    # variable = input$variable_pie_chart
+    clickData <- event_data("plotly_click", source = "heatmap")
+    variable = clickData[["x"]]
     
-    if(variable!="None"){
+    # if(variable!="None")
+    if(!is.null(clickData)){
       temp <- data.frame(
         "Country" = europe.clipped$Country,
         "Variable" = pieChartVariableInput(),
@@ -261,30 +287,33 @@ shinyServer(function(input, output) {
         layout(
           xaxis = list(
             title = as.character(variable)
-          ))
+          ),
+          yaxis = list(dtick = 1))
       
     }
     
   })
   
-  output$pie_chart_reactive <- renderPlotly({
-    
-    variable = input$variable_pie_chart
-    
-    if(variable!="None"){
-      plot_ly(data(), labels = ~Country, values = ~Variable, type = 'pie') %>%
-        layout(title = as.character(variable),
-               xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-    }
-    
-  })
+  # output$pie_chart_reactive <- renderPlotly({
+  #   
+  #   variable = input$variable_pie_chart
+  #   
+  #   if(variable!="None"){
+  #     plot_ly(data(), labels = ~Country, values = ~Variable, type = 'pie') %>%
+  #       layout(title = as.character(variable),
+  #              xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+  #              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  #   }
+  #   
+  # })
   
   output$bar_chart_reactive <- renderPlotly({
     
-    variable = input$variable_pie_chart
+    # variable = input$variable_pie_chart
+    clickData <- event_data("plotly_click", source = "heatmap")
+    variable = clickData[["x"]]
     
-    if(variable!="None"){
+    if(!is.null(clickData)){
       temp = data()
       temp = temp[-which(temp$Country=="Average"), ]
       temp$Country <- factor(temp$Country, levels = unique(temp$Country)[order(temp$Variable, decreasing = F)])

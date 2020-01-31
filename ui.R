@@ -58,14 +58,14 @@ body = dashboardBody(
                                   leafletOutput("map_simple_1", height = "100%"))
                 ),
                 tabPanel(p(icon("chart-bar"), "Heatmap - Bar Chart - Radar Chart Visualization"),
-                         fluidRow(
-                           column(4,
-                                  selectInput("variable_pie_chart", "Attribute:",
-                                              choices = c("None","Area", "GDP", "Inflation",
-                                                          "Life expectancy", "Military", "Population growth",
-                                                          "Unemployment")), align = "center", offset = 4
-                           )
-                         ),
+                         # fluidRow(
+                         #   column(4,
+                         #          selectInput("variable_pie_chart", "Attribute:",
+                         #                      choices = c("None","Area", "GDP", "Inflation",
+                         #                                  "Life expectancy", "Military", "Population growth",
+                         #                                  "Unemployment")), align = "center", offset = 4
+                         #   )
+                         # ),
                          fluidRow(
                            column(6, box(
                              status = "primary",
