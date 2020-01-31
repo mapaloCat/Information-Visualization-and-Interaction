@@ -1,6 +1,6 @@
 <link href="styleMD.css" rel="stylesheet"></link>
 
-# Together we explore Europe! 
+# Explore Europe with the application
 The shiny application is work of:
 
 <div class="center-block row" >
