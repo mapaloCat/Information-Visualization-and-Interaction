@@ -1132,12 +1132,12 @@ pca_dimensions_function = function(dim1, dim2) {
   eu.pca = PCA(eu, quali.sup=1, ncp=8, scale.unit = T, graph = F)
   if(is.na(dim1)|| is.na(dim2)) {
     #return(fviz_pca_var(eu.pca, axes = c(1,2)))
-    return(fviz_pca_var(eu.pca, axes = c(1,2), col.var = "contrib",
+    return(fviz_pca_var(eu.pca, axes = c(1,2), col.var = "contrib", palette="YlOrRd",
                         gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
     ))
   }else {
     #return(fviz_pca_var(eu.pca, axes = c(dim1,dim2)))
-    return(fviz_pca_var(eu.pca, axes = c(dim1,dim2), col.var = "contrib",
+    return(fviz_pca_var(eu.pca, axes = c(dim1,dim2), col.var = "contrib", palette="YlOrRd",
                         gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
     ))
   }
