@@ -72,7 +72,7 @@ body = dashboardBody(
                              width = "12",
                              solidHeader = T,
                              # plotlyOutput("pie_chart_static")
-                             plotlyOutput("heatmap")
+                             withSpinner(plotlyOutput("heatmap"))
                            )),
                            column(6, box(
                              status = "primary",
