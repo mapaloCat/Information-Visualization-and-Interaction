@@ -75,13 +75,13 @@ The application is built upon functions of different R packages. This is the com
 Execute the following command to successfully install a new package in your R environment:
 
 ```
-install.packages("name of the package")
+install.packages("name-of-the-package")
 ```
 
 Then you can call any package library by executing:   
 
 ```
-library(name of the packages)
+library(name-of-the-package)
 ```  
 
 
