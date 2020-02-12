@@ -5,13 +5,17 @@ The shiny application is work of:
 
 <div class="center-block row" >
 
-<div class=col-sm-6>
+<div class="col-sm-4">
   <img class="img-circle" src="bart.jpg" width="200" height = "200"/>
-  <p> Bart van Rooijen </br>(<a href = "mailto:bart@student.tue.nl">b.w.m.v.rooijen@student.tue.nl</a>)</p>
+  <p> Bart van Rooijen </br>(<a href = "mailto:b.w.m.v.rooijen@student.tue.nl">b.w.m.v.rooijen@student.tue.nl</a>)</p>
 </div>
-<div>
+<div class="col-sm-4">
+  <img class="img-circle" src="roberto.png" width="200" height = "200"/>
+  <p> Roberto Llop Cardenal </br>(<a href = "mailto:robertollopcardenal@gmail.com">robertollopcardenal@gmail.com</a>)</p>
+</div>
+<div class="col-sm-4">
   <img class="img-circle" src="panas.png" width="200" height = "200"/> 
-  <p> Panagiotis Michalopoulos </br>(<a href="mailto:p.michalopoulos1@student.tue.nl">p.michalopoulos1@student.tue.nl</a>)</p>
+  <p> Panagiotis Michalopoulos </br>(<a href="mailto:panagi.michalopoulos@gmail.com">panagi.michalopoulos@gmail.com</a>)</p>
 </div>
 
 </div> 
